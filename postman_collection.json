@@ -1,0 +1,106 @@
+
+
+
+{
+  "info": {
+    "name": "Hogwarts Library API",
+    "_postman_id": "hogwarts-magic-uuid",
+    "description": "Collection of CRUD endpoints for wizards, spells, books, and magical schools",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Wizards",
+      "item": [
+        {
+          "name": "Create Wizard",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:5000/wizard" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"school_id\": \"hogwarts_id\",\n  \"wizard_name\": \"Harry Potter\",\n  \"house\": \"Gryffindor\",\n  \"year_enrolled\": 1991,\n  \"magical_power_level\": 85,\n  \"active\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Wizards",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/wizards" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schools",
+      "item": [
+        {
+          "name": "Create School",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "http://localhost:5000/school" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"school_name\": \"Hogwarts School of Witchcraft and Wizardry\",\n  \"location\": \"Scottish Highlands, Scotland\",\n  \"founded_year\": 990,\n  \"headmaster\": \"Albus Dumbledore\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "http://localhost:5000/book" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"school_id\": \"hogwarts_id\",\n  \"title\": \"The Standard Book of Spells (Grade 1)\",\n  \"author\": \"Miranda Goshawk\",\n  \"subject\": \"Charms\",\n  \"rarity_level\": 1,\n  \"magical_properties\": \"Self-updating text based on curriculum changes\",\n  \"available\": true\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Spells",
+      "item": [
+        {
+          "name": "Create Spell",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "http://localhost:5000/spell" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"spell_name\": \"Expelliarmus\",\n  \"incantation\": \"ex-PELL-ee-ARE-mus\",\n  \"difficulty_level\": 3,\n  \"spell_type\": \"Disarming Charm\",\n  \"description\": \"Forces whatever an opponent is holding to fly out of their hand\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Specializations",
+      "item": [
+        {
+          "name": "Create Specialization",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "http://localhost:5000/wizard/specialize" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"wizard_id\": \"wizard_id\",\n  \"spell_id\": \"spell_id\",\n  \"proficiency_level\": 5,\n  \"date_learned\": \"1991-10-31\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
