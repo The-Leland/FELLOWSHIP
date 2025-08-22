@@ -2,29 +2,31 @@
 
 
 from datetime import datetime
-from models.reflection_models import HeroQuest
+from sqlalchemy import insert, select
+from utils.reflection import hero_quests_table
 from utils.reflection import get_session
 
 def assign_hero_to_quest(data):
     session = get_session()
-    required_fields = ["hero_id", "quest_id"]
-    if not all(field in data for field in required_fields):
+    if "hero_id" not in data or "quest_id" not in data:
         return {"message": "Missing hero_id or quest_id"}, 400
 
-    existing = session.query(HeroQuest).filter_by(
-        hero_id=data["hero_id"], quest_id=data["quest_id"]
-    ).first()
+    stmt = select(hero_quests_table).where(
+        hero_quests_table.c.hero_id == data["hero_id"],
+        hero_quests_table.c.quest_id == data["quest_id"]
+    )
+    existing = session.execute(stmt).first()
     if existing:
         return {"message": "Hero already assigned to this quest"}, 409
 
-    new_assignment = HeroQuest(
+    stmt = insert(hero_quests_table).values(
         hero_id=data["hero_id"],
         quest_id=data["quest_id"],
         date_joined=data.get("date_joined", datetime.utcnow())
     )
 
-    session.add(new_assignment)
     try:
+        session.execute(stmt)
         session.commit()
     except Exception as e:
         session.rollback()
@@ -32,6 +34,8 @@ def assign_hero_to_quest(data):
 
     return {"message": "Hero assigned to quest successfully"}, 201
 
-
 def get_hero_quests(hero_id):
-    return get_session().query(HeroQuest).filter_by(hero_id=hero_id).all()
+    session = get_session()
+    stmt = select(hero_quests_table).where(hero_quests_table.c.hero_id == hero_id)
+    result = session.execute(stmt).fetchall()
+    return [dict(row._mapping) for row in result]

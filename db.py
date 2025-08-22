@@ -1,10 +1,22 @@
 
 
 
-import os
-from sqlalchemy import create_engine
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/middleearth")
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import UUID
 
-def get_engine():
-    return create_engine(DATABASE_URL, echo=True)
+__all__ = ('db', 'init_db')
+
+db = SQLAlchemy()
+
+def init_db(app=None, db=None):
+    if isinstance(app, Flask) and isinstance(db, SQLAlchemy):
+        db.init_app(app)
+
+    else:
+        raise ValueError("Cannot init DB without db and app objects")
+    
+def create_tables(app):
+    with app.app_context():
+        db.create_all()
